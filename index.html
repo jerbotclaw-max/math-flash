@@ -2,37 +2,38 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Math Flash Cards</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  user-select: none; -webkit-user-select: none;
+  user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent;
 }
-.container { text-align: center; width: 100%; max-width: 500px; padding: 20px; }
+.container { text-align: center; width: 100%; max-width: 500px; padding: 16px; }
 
 /* Setup screen */
 .setup-card {
-  background: #fff; border-radius: 24px; padding: 32px 24px;
+  background: #fff; border-radius: 24px; padding: 28px 20px;
   box-shadow: 0 20px 60px rgba(0,0,0,.3);
 }
 .setup-card h1 { font-size: 2rem; color: #333; margin-bottom: 8px; }
-.setup-card p.sub { color: #888; font-size: 1rem; margin-bottom: 24px; }
-.option-group { margin-bottom: 20px; }
-.option-group label { display: block; font-size: .85rem; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.setup-card p.sub { color: #888; font-size: .95rem; margin-bottom: 20px; }
+.option-group { margin-bottom: 16px; }
+.option-group label { display: block; font-size: .8rem; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
 .chip-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 .chip {
-  padding: 12px 20px; border-radius: 12px; border: 3px solid #e0e0e0;
-  background: #f8f8f8; font-size: 1.1rem; font-weight: 700; cursor: pointer;
-  transition: all .15s; min-width: 60px;
+  padding: 10px 18px; border-radius: 12px; border: 3px solid #e0e0e0;
+  background: #f8f8f8; font-size: 1rem; font-weight: 700; cursor: pointer;
+  transition: all .15s; min-width: 50px; -webkit-touch-callout: none;
 }
-.chip:hover { border-color: #aaa; }
+.chip:active { transform: scale(.95); }
 .chip.active { border-color: #764ba2; background: #764ba2; color: #fff; }
 .start-btn {
-  margin-top: 16px; padding: 16px 48px; font-size: 1.3rem; font-weight: 800;
+  margin-top: 12px; padding: 14px 40px; font-size: 1.2rem; font-weight: 800;
   color: #fff; background: linear-gradient(135deg, #667eea, #764ba2);
   border: none; border-radius: 16px; cursor: pointer; transition: transform .1s;
   box-shadow: 0 8px 24px rgba(118,75,162,.4);
@@ -41,79 +42,87 @@ body {
 
 /* Game screen */
 .flash-card {
-  background: #fff; border-radius: 32px; padding: 40px 24px 32px;
+  background: #fff; border-radius: 28px; padding: 28px 20px 24px;
   box-shadow: 0 20px 60px rgba(0,0,0,.3); position: relative; overflow: hidden;
 }
-.stats-row { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; }
+.stats-row { display: flex; justify-content: center; gap: 16px; margin-bottom: 16px; }
 .stat { text-align: center; }
-.stat .num { font-size: 1.6rem; font-weight: 800; }
-.stat .label { font-size: .7rem; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+.stat .num { font-size: 1.4rem; font-weight: 800; }
+.stat .label { font-size: .65rem; color: #999; text-transform: uppercase; letter-spacing: 1px; }
 .stat .num.green { color: #22c55e; }
 .stat .num.red { color: #ef4444; }
 .stat .num.blue { color: #3b82f6; }
 .stat .num.orange { color: #f59e0b; }
 
 .problem {
-  font-size: 4.5rem; font-weight: 800; color: #333; margin: 20px 0;
+  font-size: 4rem; font-weight: 800; color: #333; margin: 16px 0;
   display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
-  min-height: 220px; line-height: 1.15; font-family: 'SF Mono', 'Courier New', monospace;
-  width: fit-content; margin-left: auto; margin-right: auto; padding: 0 20px;
+  min-height: 200px; line-height: 1.2; font-family: 'SF Mono', 'Courier New', monospace;
+  width: fit-content; margin-left: auto; margin-right: auto; padding: 0 16px;
 }
-.problem .row { display: flex; align-items: center; gap: 12px; }
-.problem .num { min-width: 120px; text-align: right; }
-.problem .op { color: #764ba2; min-width: 40px; text-align: center; }
+.problem .row { display: flex; align-items: center; gap: 10px; }
+.problem .num { min-width: 110px; text-align: right; }
+.problem .op { color: #764ba2; min-width: 36px; text-align: center; }
 .problem .line { border-top: 4px solid #333; width: 100%; margin: 4px 0; }
 
-.answer-display {
-  min-height: 60px; margin: 12px 0 8px; display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.answer-text { font-size: 1.6rem; font-weight: 700; color: #aaa; }
+.answer-area { margin: 12px 0 8px; }
+.answer-display { min-height: 40px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.answer-text { font-size: 1.4rem; font-weight: 700; color: #aaa; }
 .answer-text.heard { color: #333; }
 
-.mic-section { margin: 16px 0; }
+/* Input row - always visible */
+.input-row {
+  display: flex; gap: 8px; justify-content: center; align-items: center; margin: 12px 0;
+}
+.answer-input {
+  width: 120px; padding: 12px 8px; font-size: 1.4rem; font-weight: 700; text-align: center;
+  border: 3px solid #e0e0e0; border-radius: 12px; outline: none; -webkit-appearance: none;
+  background: #f8f8f8; color: #333; font-family: 'SF Mono', 'Courier New', monospace;
+}
+.answer-input:focus { border-color: #764ba2; background: #fff; }
+.submit-btn {
+  padding: 12px 20px; font-size: 1.1rem; font-weight: 800; color: #fff;
+  background: #764ba2; border: none; border-radius: 12px; cursor: pointer;
+  transition: transform .1s;
+}
+.submit-btn:active { transform: scale(.93); }
+
+.mic-section { margin: 10px 0; }
 .mic-btn {
-  width: 72px; height: 72px; border-radius: 50%; border: none; cursor: pointer;
-  background: #ef4444; color: #fff; font-size: 1.8rem; display: inline-flex;
+  width: 64px; height: 64px; border-radius: 50%; border: none; cursor: pointer;
+  background: #ef4444; color: #fff; font-size: 1.6rem; display: inline-flex;
   align-items: center; justify-content: center; transition: all .2s;
-  box-shadow: 0 6px 20px rgba(239,68,68,.4);
+  box-shadow: 0 6px 20px rgba(239,68,68,.4); -webkit-touch-callout: none;
 }
 .mic-btn.listening {
   background: #22c55e; animation: pulse 1.2s infinite;
   box-shadow: 0 6px 20px rgba(34,197,94,.5);
 }
-.mic-btn:active { transform: scale(.92); }
+.mic-btn:active { transform: scale(.9); }
+.mic-btn.disabled { background: #ccc; box-shadow: none; }
 @keyframes pulse {
   0%,100% { transform: scale(1); }
-  50% { transform: scale(1.1); box-shadow: 0 6px 30px rgba(34,197,94,.7); }
+  50% { transform: scale(1.08); box-shadow: 0 6px 30px rgba(34,197,94,.7); }
 }
 
 .feedback {
-  min-height: 36px; font-size: 1.3rem; font-weight: 700; margin: 8px 0 4px;
+  min-height: 32px; font-size: 1.2rem; font-weight: 700; margin: 6px 0 4px;
   opacity: 0; transition: opacity .2s;
 }
 .feedback.show { opacity: 1; }
 .feedback.correct { color: #22c55e; }
 .feedback.wrong { color: #ef4444; }
 
-.mode-toggle { display: flex; justify-content: center; gap: 8px; margin-top: 8px; }
-.mode-btn {
-  padding: 6px 14px; border-radius: 8px; border: 2px solid #e0e0e0; background: #f8f8f8;
-  font-size: .8rem; font-weight: 600; cursor: pointer; color: #666;
-}
-.mode-btn.active { border-color: #764ba2; color: #764ba2; }
-
-.controls { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+.controls { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
 .ctrl-btn {
   padding: 8px 16px; border-radius: 10px; border: 2px solid #ddd; background: #fff;
   font-size: .85rem; font-weight: 600; cursor: pointer; color: #666; transition: all .15s;
 }
-.ctrl-btn:hover { border-color: #aaa; }
+.ctrl-btn:active { transform: scale(.95); }
 
-/* Auto-listen hint */
-.auto-hint { font-size: .8rem; color: #999; margin-top: 6px; }
+.auto-hint { font-size: .8rem; color: #999; margin-top: 4px; cursor: pointer; padding: 4px; }
 .auto-hint.on { color: #22c55e; font-weight: 600; }
 
-/* Celebration */
 .celebrate {
   position: absolute; top: 0; left: 0; right: 0; bottom: 0;
   pointer-events: none; z-index: 10;
@@ -131,7 +140,7 @@ body {
 <div class="container" id="setupScreen">
   <div class="setup-card">
     <h1>🔢 Math Flash</h1>
-    <p class="sub">Say the answer out loud!</p>
+    <p class="sub">Say it or type it!</p>
 
     <div class="option-group">
       <label>Digits</label>
@@ -169,13 +178,20 @@ body {
 
     <div class="problem" id="problemDisplay"></div>
 
-    <div class="answer-display">
-      <span class="answer-text" id="heardText">Tap mic and say the answer</span>
-    </div>
+    <div class="answer-area">
+      <div class="answer-display">
+        <span class="answer-text" id="heardText">Type or say the answer</span>
+      </div>
 
-    <div class="mic-section">
-      <button class="mic-btn" id="micBtn">🎤</button>
-      <div class="auto-hint" id="autoHint">Auto-listen: OFF (tap to toggle)</div>
+      <div class="input-row">
+        <input type="tel" class="answer-input" id="answerInput" placeholder="?" autocomplete="off" inputmode="numeric" pattern="[0-9]*">
+        <button class="submit-btn" id="submitBtn">✓</button>
+      </div>
+
+      <div class="mic-section">
+        <button class="mic-btn" id="micBtn">🎤</button>
+        <div class="auto-hint" id="autoHint">Auto-listen: OFF</div>
+      </div>
     </div>
 
     <div class="feedback" id="feedback"></div>
@@ -195,6 +211,7 @@ let autoListen = false;
 let currentAnswer = null;
 let stats = { correct: 0, wrong: 0, total: 0, streak: 0 };
 let recognition = null;
+let speechSupported = false;
 let isListening = false;
 let canAnswer = true;
 
@@ -219,13 +236,15 @@ document.getElementById('startBtn').addEventListener('click', () => {
   document.getElementById('gameScreen').classList.remove('hidden');
   initSpeech();
   nextProblem();
+  document.getElementById('answerInput').focus();
 });
 
 // ---- Auto-listen toggle ----
 document.getElementById('autoHint').addEventListener('click', () => {
+  if (!speechSupported) return;
   autoListen = !autoListen;
   const el = document.getElementById('autoHint');
-  el.textContent = 'Auto-listen: ' + (autoListen ? 'ON 🎉' : 'OFF (tap to toggle)');
+  el.textContent = 'Auto-listen: ' + (autoListen ? 'ON 🎉' : 'OFF');
   el.classList.toggle('on', autoListen);
 });
 
@@ -239,10 +258,13 @@ function randNum(d) {
 function nextProblem() {
   canAnswer = true;
   document.getElementById('feedback').className = 'feedback';
-  document.getElementById('heardText').textContent = 'Listening...';
+  document.getElementById('heardText').textContent = '';
   document.getElementById('heardText').className = 'answer-text';
+  const input = document.getElementById('answerInput');
+  input.value = '';
+  input.focus();
 
-  let a, b, op, display;
+  let a, b, op;
   const useOp = operation === 'mixed' ? (Math.random() < 0.5 ? 'add' : 'subtract') : operation;
 
   if (useOp === 'add') {
@@ -257,12 +279,14 @@ function nextProblem() {
     currentAnswer = a - b;
     op = '−';
   }
-  display = `<div class=\"row\"><span class=\"num\">${a}</span></div><div class=\"row\"><span class=\"op\">${op}</span><span class=\"num\">${b}</span></div><div class=\"line\"></div>`;
+  const display = '<div class="row"><span class="num">' + a + '</span></div>' +
+    '<div class="row"><span class="op">' + op + '</span><span class="num">' + b + '</span></div>' +
+    '<div class="line"></div>';
 
   document.getElementById('problemDisplay').innerHTML = display;
 
-  if (autoListen) {
-    setTimeout(() => startListening(), 400);
+  if (autoListen && speechSupported) {
+    setTimeout(() => startListening(), 500);
   }
 }
 
@@ -270,9 +294,13 @@ function nextProblem() {
 function initSpeech() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
-    alert('Speech recognition not supported. Try Chrome or Safari.');
+    speechSupported = false;
+    document.getElementById('micBtn').classList.add('disabled');
+    document.getElementById('micBtn').textContent = '🚫';
+    document.getElementById('autoHint').textContent = 'Voice not supported — type answers';
     return;
   }
+  speechSupported = true;
   recognition = new SR();
   recognition.continuous = false;
   recognition.interimResults = true;
@@ -294,7 +322,6 @@ function initSpeech() {
     heardEl.textContent = '"' + best.trim() + '"';
     heardEl.classList.add('heard');
 
-    // Try to parse number from all alternatives
     if (e.results[e.results.length - 1].isFinal) {
       let parsed = null;
       for (const alt of alts) {
@@ -302,19 +329,30 @@ function initSpeech() {
         if (n !== null) { parsed = n; break; }
       }
       if (parsed !== null && canAnswer) {
+        // Also fill the input so they see it
+        document.getElementById('answerInput').value = parsed;
         checkAnswer(parsed);
-      } else {
-        showFeedback('Didn\'t catch that 🤔', false);
-        if (autoListen) setTimeout(() => { if (canAnswer) startListening(); }, 1500);
+      } else if (canAnswer) {
+        // Speech didn't parse — don't penalize, just let them type
+        showFeedback('Didn\'t catch that — type it! ⌨️', false);
+        document.getElementById('answerInput').focus();
       }
     }
   };
 
   recognition.onerror = (e) => {
-    if (e.error === 'not-allowed') {
-      alert('Microphone access needed! Allow it in browser settings.');
-    }
     stopListening();
+    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+      autoListen = false;
+      document.getElementById('autoHint').textContent = 'Mic blocked — type answers';
+      document.getElementById('autoHint').classList.remove('on');
+      document.getElementById('heardText').textContent = 'Type the answer below ⬇️';
+    } else if (e.error === 'no-speech') {
+      // No speech detected — just let them type
+      if (canAnswer) document.getElementById('answerInput').focus();
+    } else if (e.error === 'aborted') {
+      // User or we aborted — ignore
+    }
   };
 
   recognition.onend = () => {
@@ -323,28 +361,45 @@ function initSpeech() {
 }
 
 function startListening() {
-  if (!recognition || isListening) return;
+  if (!recognition || !speechSupported || isListening) return;
   try {
     recognition.start();
     isListening = true;
     document.getElementById('micBtn').classList.add('listening');
-    document.getElementById('heardText').textContent = 'Listening...';
+    document.getElementById('heardText').textContent = '🎤 Listening...';
     document.getElementById('heardText').className = 'answer-text';
   } catch(e) { /* already started */ }
 }
 
 function stopListening() {
   isListening = false;
-  document.getElementById('micBtn').classList.remove('listening');
+  const btn = document.getElementById('micBtn');
+  if (btn) btn.classList.remove('listening');
 }
 
 document.getElementById('micBtn').addEventListener('click', () => {
+  if (!speechSupported) return;
   if (isListening) {
-    recognition.stop();
+    try { recognition.stop(); } catch(e) {}
   } else {
     startListening();
   }
 });
+
+// ---- Keyboard input ----
+document.getElementById('submitBtn').addEventListener('click', submitTyped);
+document.getElementById('answerInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); submitTyped(); }
+});
+
+function submitTyped() {
+  const input = document.getElementById('answerInput');
+  const val = input.value.trim();
+  if (val === '' || !canAnswer) return;
+  const n = parseInt(val);
+  if (isNaN(n)) return;
+  checkAnswer(n);
+}
 
 // ---- Answer checking ----
 function checkAnswer(n) {
@@ -367,9 +422,6 @@ function checkAnswer(n) {
 
   const delay = n === currentAnswer ? 900 : 1800;
   setTimeout(() => nextProblem(), delay);
-  if (autoListen) {
-    // nextProblem triggers listening
-  }
 }
 
 function showFeedback(text, correct) {
@@ -402,7 +454,7 @@ document.getElementById('skipBtn').addEventListener('click', () => {
 });
 
 document.getElementById('newBtn').addEventListener('click', () => {
-  if (recognition && isListening) recognition.stop();
+  if (recognition && isListening) { try { recognition.stop(); } catch(e) {} }
   document.getElementById('gameScreen').classList.add('hidden');
   document.getElementById('setupScreen').classList.remove('hidden');
 });
@@ -424,11 +476,9 @@ function wordsToNumber(text) {
   s = s.replace(/[^\w\s-]/g, ' ');
   s = s.replace(/\s+/g, ' ').trim();
 
-  // Handle "hundred" patterns
   const ones = { zero:0, oh:0, o:0, one:1, two:2, three:3, four:4, five:5, six:6, seven:7, eight:8, nine:9 };
   const teens = { ten:10, eleven:11, twelve:12, thirteen:13, fourteen:14, fifteen:15, sixteen:16, seventeen:17, eighteen:18, nineteen:19 };
   const tens = { twenty:20, thirty:30, forty:40, fourty:40, fifty:50, sixty:60, seventy:70, eighty:80, ninety:90 };
-  const scales = { hundred:100, thousand:1000 };
 
   const words = s.split(/[\s-]+/);
   let result = 0;
@@ -443,7 +493,6 @@ function wordsToNumber(text) {
     else if (w === 'hundred') { current = (current || 1) * 100; valid = true; }
     else if (w === 'thousand') { result += (current || 1) * 1000; current = 0; valid = true; }
     else if (w === 'a' && current === 0) { current = 1; }
-    else { /* unknown word, skip */ }
   }
   result += current;
   return valid ? result : null;
