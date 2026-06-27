@@ -231,10 +231,12 @@ document.querySelectorAll('#opChips .chip').forEach(c => {
   });
 });
 
-document.getElementById('startBtn').addEventListener('click', () => {
+document.getElementById('startBtn').addEventListener('click', async () => {
   document.getElementById('setupScreen').classList.add('hidden');
   document.getElementById('gameScreen').classList.remove('hidden');
   initSpeech();
+  // Try to unlock mic on Start tap (user gesture) so auto-listen works later
+  unlockMic();
   nextProblem();
   document.getElementById('answerInput').focus();
 });
@@ -287,6 +289,21 @@ function nextProblem() {
 
   if (autoListen && speechSupported) {
     setTimeout(() => startListening(), 500);
+  }
+}
+
+// ---- Mic permission unlock (iOS Safari needs getUserMedia from user gesture) ----
+let micUnlocked = false;
+async function unlockMic() {
+  if (micUnlocked) return true;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    // Stop tracks immediately — we just needed the permission grant
+    stream.getTracks().forEach(t => t.stop());
+    micUnlocked = true;
+    return true;
+  } catch(e) {
+    return false;
   }
 }
 
@@ -377,13 +394,20 @@ function stopListening() {
   if (btn) btn.classList.remove('listening');
 }
 
-document.getElementById('micBtn').addEventListener('click', () => {
+document.getElementById('micBtn').addEventListener('click', async () => {
   if (!speechSupported) return;
   if (isListening) {
     try { recognition.stop(); } catch(e) {}
-  } else {
-    startListening();
+    return;
   }
+  // iOS Safari: must call getUserMedia from this user gesture to unlock mic
+  const unlocked = await unlockMic();
+  if (!unlocked) {
+    document.getElementById('heardText').textContent = 'Mic blocked — type below ⬇️';
+    document.getElementById('answerInput').focus();
+    return;
+  }
+  startListening();
 });
 
 // ---- Keyboard input ----
